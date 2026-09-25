@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const url_base = 'http://serv-back-n1:8080/api/produtos';
+const url_base = 'http://serv-back-n1:8080/api/lanches';
 
 export async function GET(request: Request) {
     const resposta = await axios.get(url_base);

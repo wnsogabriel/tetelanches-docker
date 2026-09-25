@@ -5,15 +5,16 @@ import axios from 'axios';
 import { useState, useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
 
-const url_base = '/api/produtos';
+const url_base = '/api/lanches';
 
-interface iProduto {
+interface iLanche {
   id: number|null;
   nome: string;
-  quantidade: number;
+  preco: number;
+  descricao: string;
 }
 
-const obterDados = async (): Promise<Array<iProduto>> => {
+const obterDados = async (): Promise<Array<iLanche>> => {
   try {
     // Faz a requisição GET para a API de teste
     const resposta = await axios.get(url_base);
@@ -30,7 +31,7 @@ const obterDados = async (): Promise<Array<iProduto>> => {
   }
 }
 
-const incluirProduto = async (dados: iProduto): Promise<boolean> => {
+const incluirLanche = async (dados: iLanche): Promise<boolean> => {
   try {
     // Faz a requisição POST para a API de teste
     await axios.post(url_base, dados);
@@ -42,25 +43,26 @@ const incluirProduto = async (dados: iProduto): Promise<boolean> => {
   }
 }
 
-interface tabProdProps {
-  dados: Array<iProduto>;
+interface tabLancheProps {
+  dados: Array<iLanche>;
 }
 
-function TabelaProdutos({ dados }: tabProdProps) {
+function TabelaLanches({ dados }: tabLancheProps) {
   return (
     <table className='table table-striped'>
       <thead className='table-dark'>
         <tr>
-          <td>Id</td><td>Nome</td><td>Quantidade</td>
+          <td>Id</td><td>Nome</td><td>Preço</td><td>Descrição</td>
         </tr>
       </thead>
       <tbody>
         {/* O método map percorre cada produto e retorna um elemento <tr> */}
-        {dados.map((produto) => (
-          <tr key={produto.id}>
-            <td>{produto.id}</td>
-            <td>{produto.nome}</td>
-            <td>{produto.quantidade}</td>
+        {dados.map((lanche) => (
+          <tr key={lanche.id}>
+            <td>{lanche.id}</td>
+            <td>{lanche.nome}</td>
+            <td>{lanche.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+            <td>{lanche.descricao}</td>
           </tr>
         ))}
       </tbody>
@@ -68,19 +70,21 @@ function TabelaProdutos({ dados }: tabProdProps) {
   )
 }
 
-interface iFormProProps {
-   onAdd: (dados: iProduto) => void;
+interface iFormLancheProps {
+   onAdd: (dados: iLanche) => void;
 }
 
-function FormProduto({onAdd}: iFormProProps){
+function FormLanche({onAdd}: iFormLancheProps){
   const [nome, setNome] = useState("")
-  const [quantidade, setQuantidade] = useState(0)
+  const [preco, setPreco] = useState(0)
+  const [descricao, setDescricao] = useState("")
 
   const addClique = () => {
-      const produto = {id:null, nome: nome, quantidade: quantidade};
+      const lanche = {id:null, nome: nome, preco: preco, descricao: descricao};
       setNome("");
-      setQuantidade(0);
-      onAdd(produto);
+      setPreco(0);
+      setDescricao("");
+      onAdd(lanche);
   }
 
   return(
@@ -89,9 +93,13 @@ function FormProduto({onAdd}: iFormProProps){
       <input type="text" value={nome} className='form-control'
              onChange={e => setNome(e.target.value)}/>
       <br/>
-      <label className='form-label'>Quantidade:</label>
-      <input type="number" value={quantidade} className='form-control'
-             onChange={e => setQuantidade(Number(e.target.value))}/>
+      <label className='form-label'>Preço:</label>
+      <input type="number" step="0.01" value={preco} className='form-control'
+             onChange={e => setPreco(Number(e.target.value))}/>
+      <br/>
+      <label className='form-label'>Descrição:</label>
+      <input type="text" value={descricao} className='form-control'
+             onChange={e => setDescricao(e.target.value)}/>
       <br/>
       <button className='btn btn-primary' onClick={addClique}>Adicionar</button>
     </div>
@@ -100,12 +108,12 @@ function FormProduto({onAdd}: iFormProProps){
 
 function App() {
 
-  const [produtos, setProdutos] = useState(new Array<iProduto>())
+  const [lanches, setLanches] = useState(new Array<iLanche>())
   const [carregado, setCarregado] = useState(false)
 
   useEffect(() => {
     obterDados().then((dados) => {
-      setProdutos(dados);
+      setLanches(dados);
       setCarregado(true);
     })
   }, [carregado])
@@ -114,13 +122,13 @@ function App() {
     <>
       <section id="center">
         <h1>Centro</h1>
-        <FormProduto onAdd={(dados)=>{
-          incluirProduto(dados).then((resultado) => { 
+        <FormLanche onAdd={(dados)=>{
+          incluirLanche(dados).then((resultado) => { 
             if(resultado)
               setCarregado(false);
           })
         }} />
-        <TabelaProdutos dados={produtos} />
+        <TabelaLanches dados={lanches} />
       </section>
       <section id="footer">
         Footer
