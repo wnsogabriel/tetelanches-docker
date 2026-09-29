@@ -14,13 +14,12 @@ public class SwaggerConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("Minha API de Produtos Customizada")
+                        .title("API do Cardápio TeteLanches")
                         .version("v1.0.0")
-                        .description("Documentação interativa da API do sistema de produtos.")
+                        .description("Documentação interativa da API do cardápio.")
                         .contact(new Contact()
                                 .name("Suporte Técnico")
-                                .email("suporte@empresa.com")
-                                .url("https://empresa.com"))
+                                .url("https://github.com/wnsogabriel/tetelanches-docker"))
                         .license(new License()
                                 .name("Apache 2.0")
                                 .url("https://springdoc.org")));

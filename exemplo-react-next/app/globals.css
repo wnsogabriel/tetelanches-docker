@@ -1,26 +1,21 @@
-@import "tailwindcss";
+/*
+  Tailwind com prefixo "tw:" para nao colidir com o Bootstrap.
+  Ex: a classe "container" existe nos dois; com o prefixo, a do
+  Tailwind vira "tw:container" e cada framework cuida da sua.
+*/
+@import "tailwindcss" prefix(tw);
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Paleta do Tete Lanches (briefing da marca) */
+@theme {
+  --color-oliva: #7A9A3E;    /* primaria: nome da marca, detalhes */
+  --color-laranja: #E8720C;  /* secundaria: botoes, precos */
+  --color-dourado: #F4B942;  /* acento: hover, destaques */
+  --color-marrom: #4A2E1A;   /* texto forte, cabecalho e rodape */
+  --color-creme: #FFF8EE;    /* fundo (off-white) */
 }
 
+/* Fontes carregadas pelo next/font no layout.tsx */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  --font-marca: var(--fonte-lobster);
+  --font-corpo: var(--fonte-poppins);
 }

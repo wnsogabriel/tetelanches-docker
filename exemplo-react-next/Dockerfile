@@ -21,3 +21,6 @@ EXPOSE 3000
 
 # 8. Comando para iniciar o servidor Next.js em produção
 CMD ["npm", "start"]
+
+# 9. Script pra subir o app
+# powershell -ExecutionPolicy Bypass -File .\subir.ps1
